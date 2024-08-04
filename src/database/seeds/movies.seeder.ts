@@ -15,9 +15,8 @@ export const seedMovie = async () => {
   const movieService = app.get(MovieService);
   const categoryService = app.get(CategoryService);
 
-  const movieData =
-    await require('src/common/data-template/movies.json');
-  const categories = await categoryService.getAll() ?? [];
+  const movieData = await require('src/common/data-template/movies.json');
+  const categories = (await categoryService.getAll()) ?? [];
 
   const params = [];
   for (let i = 0; i < movieData.length; i++) {
