@@ -5,9 +5,11 @@ import { TypeOrmConfigService } from './database/typeorm-config.service';
 import databaseConfig from './config/database.config';
 import appConfig from './config/app.config';
 import { MovieModule } from './modules/movies/movie.module';
+import { CategoryModule } from './modules/categories/category.module';
 
 const Modules = [
-  MovieModule
+  MovieModule,
+  CategoryModule,
 ];
 @Module({
   imports: [

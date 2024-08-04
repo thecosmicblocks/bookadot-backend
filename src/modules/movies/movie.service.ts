@@ -17,13 +17,19 @@ export class MovieService {
   ) {}
 
   async getMovies(params: any): Promise<MovieEntity[]> {
-    const { title } = params;
-    const where: any = {};
+    const { title, category_name } = params;
+    const queryBuilder = this.movieRepository.createQueryBuilder('movie')
+      .leftJoinAndSelect('movie.category', 'category');
+
     if (title) {
-      where.title = Like(`%${title}%`);
+      queryBuilder.andWhere('movie.title LIKE :title', { title: `%${title}%` });
     }
 
-    return await this.movieRepository.find({ where });
+    if (category_name) {
+      queryBuilder.andWhere('category.name LIKE :category_name', { category_name: `%${category_name}%` });
+    }
+
+    return await queryBuilder.getMany();
   }
 
   async getMovieById(id: number): Promise<MovieEntity> {
