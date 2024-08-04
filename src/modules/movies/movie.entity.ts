@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
-  OneToMany,
+  ManyToOne,
   JoinColumn,
 } from 'typeorm';
+
+import { CategoryEntity } from '../categories/category.entity';
 
 @Entity({ name: 'movies' })
 export class MovieEntity {
@@ -16,6 +18,13 @@ export class MovieEntity {
     unsigned: true,
   })
   id: number;
+
+  @Column({
+    name: 'category_id',
+    type: 'bigint',
+    nullable: true,
+  })
+  categoryId: number;
 
   @Column({
     name: 'title',
@@ -128,4 +137,8 @@ export class MovieEntity {
   updateDates() {
     this.updatedAt = new Date();
   }
+
+  @ManyToOne(() => CategoryEntity, (category) => category.movies)
+  @JoinColumn({ name: 'category_id' })
+  category: CategoryEntity;
 }

@@ -1,6 +1,7 @@
 import { Module, INestApplicationContext } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MovieService } from 'src/modules/movies/movie.service';
+import { CategoryService } from 'src/modules/categories/category.service';
 import { AppModule } from 'src/app.module';
 
 @Module({
@@ -12,23 +13,28 @@ export const seedMovie = async () => {
   const app: INestApplicationContext =
     await NestFactory.createApplicationContext(CommandModule);
   const movieService = app.get(MovieService);
+  const categoryService = app.get(CategoryService);
 
-  const MovieData =
-    await require('src/common/data-template/movies.json');
+  const movieData = await require('src/common/data-template/movies.json');
+  const categories = (await categoryService.getAll()) ?? [];
+
   const params = [];
-  for (let i = 0; i < MovieData.length; i++) {
+  for (let i = 0; i < movieData.length; i++) {
+    const randomIndex = Math.floor(Math.random() * categories.length);
+
     params.push({
-      title: MovieData[i].title,
-      description: MovieData[i].description,
-      movieUrl: MovieData[i].movie_url,
-      trailerUrl: MovieData[i].trailer_url,
-      posterUrl: MovieData[i].poster_url,
-      imdbRating: MovieData[i].imdb_rating,
-      knopoiskRating: MovieData[i].knopoisk_rating,
-      certificate: MovieData[i].certificate,
-      runtime: MovieData[i].runtime,
-      release: MovieData[i].release,
-      director: MovieData[i].director,
+      categoryId: categories.length > 0 ? categories[randomIndex].id : 0,
+      title: movieData[i].title,
+      description: movieData[i].description,
+      movieUrl: movieData[i].movie_url,
+      trailerUrl: movieData[i].trailer_url,
+      posterUrl: movieData[i].poster_url,
+      imdbRating: movieData[i].imdb_rating,
+      knopoiskRating: movieData[i].knopoisk_rating,
+      certificate: movieData[i].certificate,
+      runtime: movieData[i].runtime,
+      release: movieData[i].release,
+      director: movieData[i].director,
     });
   }
 

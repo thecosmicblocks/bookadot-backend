@@ -6,6 +6,11 @@ export class FilterMovieDto {
   @IsOptional()
   @IsString()
   title?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  category_name?: string;
 }
 
 export class CreateMovieDto {
