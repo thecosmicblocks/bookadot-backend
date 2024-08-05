@@ -4,3 +4,8 @@ export enum Environment {
   dev = 'dev',
   test = 'test',
 }
+
+export enum CHAIN_TYPE {
+  EVM = 'EVM',
+  SOLANA = 'SOLANA',
+}

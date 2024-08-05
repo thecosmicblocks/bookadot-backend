@@ -4,9 +4,7 @@ import {
   Param,
   HttpCode,
   HttpStatus,
-  Query,
   Body,
-  ValidationPipe,
   ParseIntPipe,
 } from '@nestjs/common';
 
@@ -17,9 +15,7 @@ import { NotFoundResponseDto } from 'src/common/dtos/response.dto';
 
 @Controller('movies')
 export class MovieController {
-  constructor(
-    private movieService: MovieService,
-  ) {}
+  constructor(private movieService: MovieService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -36,7 +32,9 @@ export class MovieController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async getMovieDetail(@Param('id', ParseIntPipe) id: number): Promise<SuccessResponseDto | NotFoundResponseDto> {
+  async getMovieDetail(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<SuccessResponseDto | NotFoundResponseDto> {
     try {
       const movie = await this.movieService.getMovieById(id);
       return new SuccessResponseDto(movie);
