@@ -9,6 +9,10 @@ import { MovieModule } from './modules/movies/movie.module';
 import { CategoryModule } from './modules/categories/category.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { ShowTimesModule } from './modules/show-times/show-times.module';
+import { TicketsModule } from './modules/tickets/tickets.module';
+import { SeatsModule } from './modules/seats/seats.module';
+import { ReservationsModule } from './modules/reservations/reservations.module';
 
 const Modules = [MovieModule, CategoryModule, TheatresModule, AuthModule];
 @Module({
@@ -22,6 +26,10 @@ const Modules = [MovieModule, CategoryModule, TheatresModule, AuthModule];
     }),
     ...Modules,
     UsersModule,
+    ShowTimesModule,
+    TicketsModule,
+    SeatsModule,
+    ReservationsModule,
   ],
 })
 export class AppModule {}
