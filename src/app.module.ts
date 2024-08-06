@@ -11,8 +11,19 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { SeatsModule } from './modules/seats/seats.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
-import { SessionsModule } from './modules/sessions/sessions.module';
 
+import { SessionModule } from './modules/sessions/session.module';
+
+const Modules = [
+  MovieModule,
+  UsersModule,
+  CategoryModule,
+  TheatresModule,
+  AuthModule,
+  SeatsModule,
+  ReservationsModule,
+  SessionModule,
+];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -22,14 +33,7 @@ import { SessionsModule } from './modules/sessions/sessions.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    MovieModule,
-    UsersModule,
-    CategoryModule,
-    TheatresModule,
-    AuthModule,
-    SeatsModule,
-    ReservationsModule,
-    SessionsModule,
+    ...Modules
   ],
 })
 export class AppModule {}
