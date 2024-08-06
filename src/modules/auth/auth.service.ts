@@ -1,13 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { GetNonceDto } from './dtos/get-nonce.dto';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import { SignupDto } from './dtos/sign-up.dto';
 import { CHAIN_TYPE } from 'src/constants';
 import { bufferToHex } from 'ethereumjs-util';
 import { recoverPersonalSignature } from '@metamask/eth-sig-util';
 import * as bs58 from 'bs58';
 import * as nacl from 'tweetnacl';
+import { getAddress } from 'src/ethers/lib/utils';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,8 @@ export class AuthService {
         });
         // The signature verification is successful if the address found with
         // sigUtil.recoverPersonalSignature matches the initial publicAddress
-        if (address === signer) isInvalidSigner = false;
+
+        if (getAddress(address) === getAddress(signer)) isInvalidSigner = false;
         break;
       case CHAIN_TYPE.SOLANA:
         isInvalidSigner = nacl.sign.detached.verify(
@@ -47,8 +49,13 @@ export class AuthService {
       });
   }
 
-  async getNonce(params: GetNonceDto): Promise<0 | 1> {
-    const user = await this.userService.findUserByWallet(params.address);
+  async getNonce(query: GetNonceDto): Promise<0 | 1> {
+    const user = await this.userService.findUserByWallet(
+      query.chainType === CHAIN_TYPE.EVM
+        ? getAddress(query.address)
+        : query.address,
+    );
+
     if (!user) {
       return 0;
     } else {

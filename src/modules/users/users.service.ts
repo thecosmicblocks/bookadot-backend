@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,7 +26,7 @@ export class UserService {
     });
 
     if (user) {
-      throw new Error('User already exists');
+      throw new BadRequestException('User already exists');
     }
 
     const newUser = this.userRepository.create();
