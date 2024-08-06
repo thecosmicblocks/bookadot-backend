@@ -3,7 +3,7 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SignupDto } from '../auth/dtos/sign-up.dto';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -32,7 +32,7 @@ export class UserService {
     const newUser = this.userRepository.create();
     newUser.address = params.address;
     newUser.chainType = params.chainType;
-    user.nonce = crypto.randomBytes(12).toString('hex');
-    await this.userRepository.save(params);
+    newUser.nonce = crypto.randomBytes(12).toString('hex');
+    await this.userRepository.save(newUser);
   }
 }
