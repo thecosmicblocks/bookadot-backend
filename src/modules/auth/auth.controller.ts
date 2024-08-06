@@ -4,14 +4,15 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CHAIN_TYPE } from 'src/constants';
 import { SuccessResponseDto } from '../movies/dtos/response.dto';
 import { SignupDto } from './dtos/sign-up.dto';
+import { GetNonceDto } from './dtos/get-nonce.dto';
 
 @Controller('auth')
 @ApiTags('authentications')
@@ -21,14 +22,9 @@ export class AuthController {
   @Get('/nonce')
   @ApiOperation({ summary: 'Get nonce' })
   @HttpCode(HttpStatus.OK)
-  async getNonce(
-    @Param('address') address: string,
-    @Param('chainType') chainType: CHAIN_TYPE,
-  ): Promise<SuccessResponseDto> {
-    const data = await this.authService.getNonce({
-      address,
-      chainType,
-    });
+  async getNonce(@Query() query: GetNonceDto): Promise<SuccessResponseDto> {
+    const data = await this.authService.getNonce(query);
+
     return new SuccessResponseDto(data);
   }
 
