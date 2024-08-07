@@ -1,5 +1,7 @@
 import { AbstractEntity } from 'src/database/abstract/abstract.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { ShowTimeEntity } from '../show-times/entities/show-time.entity';
+import { SeatEntity } from '../seats/entities/seat.entity';
 
 @Entity({ name: 'theatres' })
 export class TheatreEntity extends AbstractEntity {
@@ -14,4 +16,10 @@ export class TheatreEntity extends AbstractEntity {
 
   @Column({ nullable: true })
   totalSeats: number;
+
+  @OneToMany(() => ShowTimeEntity, (showTime) => showTime.theatre)
+  showTimes: ShowTimeEntity[];
+
+  @OneToMany(() => SeatEntity, (seat) => seat.theatre)
+  seats: SeatEntity[];
 }

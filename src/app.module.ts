@@ -10,11 +10,9 @@ import { CategoryModule } from './modules/categories/category.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ShowTimesModule } from './modules/show-times/show-times.module';
-import { TicketsModule } from './modules/tickets/tickets.module';
 import { SeatsModule } from './modules/seats/seats.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 
-const Modules = [MovieModule, CategoryModule, TheatresModule, AuthModule];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,10 +22,12 @@ const Modules = [MovieModule, CategoryModule, TheatresModule, AuthModule];
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    ...Modules,
+    MovieModule,
     UsersModule,
+    CategoryModule,
+    TheatresModule,
+    AuthModule,
     ShowTimesModule,
-    TicketsModule,
     SeatsModule,
     ReservationsModule,
   ],
