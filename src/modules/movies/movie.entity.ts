@@ -6,9 +6,11 @@ import {
   BeforeUpdate,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 import { CategoryEntity } from '../categories/category.entity';
+import { ShowTimeEntity } from '../show-times/entities/show-time.entity';
 
 @Entity({ name: 'movies' })
 export class MovieEntity {
@@ -141,4 +143,7 @@ export class MovieEntity {
   @ManyToOne(() => CategoryEntity, (category) => category.movies)
   @JoinColumn({ name: 'category_id' })
   category: CategoryEntity;
+
+  @OneToMany(() => ShowTimeEntity, (showTime) => showTime.movie)
+  showTimes: ShowTimeEntity[];
 }
