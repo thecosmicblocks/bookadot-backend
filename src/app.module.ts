@@ -9,9 +9,9 @@ import { MovieModule } from './modules/movies/movie.module';
 import { CategoryModule } from './modules/categories/category.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
-import { ShowTimesModule } from './modules/show-times/show-times.module';
 import { SeatsModule } from './modules/seats/seats.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
+import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
@@ -27,9 +27,9 @@ import { ReservationsModule } from './modules/reservations/reservations.module';
     CategoryModule,
     TheatresModule,
     AuthModule,
-    ShowTimesModule,
     SeatsModule,
     ReservationsModule,
+    SessionsModule,
   ],
 })
 export class AppModule {}
