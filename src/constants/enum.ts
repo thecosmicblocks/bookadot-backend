@@ -16,3 +16,10 @@ export enum MOVIE_FORMAT {
   TWO_D = '2D',
   LASER = 'LASER',
 }
+
+export enum TICKET_TYPE {
+  ADULT = 'Adult',
+  CHILD = 'child',
+  STUDENT = 'student',
+  VIP = 'VIP',
+}

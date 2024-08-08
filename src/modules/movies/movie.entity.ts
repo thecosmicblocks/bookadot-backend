@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 import { CategoryEntity } from '../categories/category.entity';
-import { ShowTimeEntity } from '../show-times/entities/show-time.entity';
+import { SessionEntity } from '../sessions/entities/session.entity';
 
 @Entity({ name: 'movies' })
 export class MovieEntity {
@@ -144,6 +144,6 @@ export class MovieEntity {
   @JoinColumn({ name: 'category_id' })
   category: CategoryEntity;
 
-  @OneToMany(() => ShowTimeEntity, (showTime) => showTime.movie)
-  showTimes: ShowTimeEntity[];
+  @OneToMany(() => SessionEntity, (session) => session.movie)
+  sessions: SessionEntity[];
 }
