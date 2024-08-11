@@ -1,7 +1,7 @@
 import { AbstractEntity } from 'src/database/abstract/abstract.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { SeatEntity } from '../seats/entities/seat.entity';
-import { SessionEntity } from '../sessions/session.entity';
+import { SessionEntity } from '../sessions/entities/session.entity';
 
 @Entity({ name: 'theatres' })
 export class TheatreEntity extends AbstractEntity {

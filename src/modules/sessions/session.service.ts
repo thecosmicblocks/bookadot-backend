@@ -5,7 +5,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository, Like } from 'typeorm';
 
-import { SessionEntity } from './session.entity';
+import { SessionEntity } from './entities/session.entity';
 import { CreateSessionDto } from './dtos/request.dto';
 import { Order, Paginate } from 'src/constants';
 import * as moment from 'moment';

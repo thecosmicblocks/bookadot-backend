@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { AbstractEntity } from 'src/database/abstract/abstract.entity';
 import { CategoryEntity } from '../categories/category.entity';
-import { SessionEntity } from '../sessions/session.entity';
+import { SessionEntity } from '../sessions/entities/session.entity';
 
 @Entity({ name: 'movies' })
 export class MovieEntity extends AbstractEntity {
