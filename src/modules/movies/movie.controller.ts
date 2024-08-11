@@ -4,8 +4,8 @@ import {
   Param,
   HttpCode,
   HttpStatus,
-  Body,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 
 import { MovieService } from './movie.service';
@@ -20,20 +20,17 @@ export class MovieController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async getMovies(
-    @Body() params: FilterMovieDto,
+    @Query() params: FilterMovieDto,
   ): Promise<SuccessResponseDto | NotFoundResponseDto> {
-    const movies = await this.movieService.getMovies(params);
-    if (movies.length > 0) {
-      return new SuccessResponseDto(movies);
-    }
+    const { movies, total, page, limit } = await this.movieService.getMovies(params);
 
-    return new NotFoundResponseDto();
+    return new SuccessResponseDto({ movies, total, page, limit });
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getMovieDetail(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: string,
   ): Promise<SuccessResponseDto | NotFoundResponseDto> {
     try {
       const movie = await this.movieService.getMovieById(id);

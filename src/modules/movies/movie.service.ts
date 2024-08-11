@@ -7,7 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository, Like } from 'typeorm';
 
 import { MovieEntity } from './movie.entity';
-import { CreateMovieDto } from './dtos/request.dto';
+import { CreateMovieDto, FilterMovieDto } from './dtos/request.dto';
+import { Order, Paginate } from 'src/constants';
 
 @Injectable()
 export class MovieService {
@@ -17,8 +18,21 @@ export class MovieService {
     private dataSource: DataSource,
   ) {}
 
-  async getMovies(params: any): Promise<MovieEntity[]> {
-    const { title, category_name } = params;
+  async getMovies(params: any): Promise<{
+    movies: MovieEntity[],
+    total: number,
+    page: number,
+    limit: number
+  }> {
+    const {
+      title,
+      categoryName,
+      page = Paginate.page,
+      limit = Paginate.limit,
+      orderBy = 'title',
+      orderType = Order.ASC,
+    } = params;
+
     const queryBuilder = this.movieRepository
       .createQueryBuilder('movie')
       .leftJoinAndSelect('movie.category', 'category');
@@ -27,22 +41,36 @@ export class MovieService {
       queryBuilder.andWhere('movie.title LIKE :title', { title: `%${title}%` });
     }
 
-    if (category_name) {
+    if (categoryName) {
       queryBuilder.andWhere('category.name LIKE :category_name', {
-        category_name: `%${category_name}%`,
+        category_name: `%${categoryName}%`,
       });
     }
 
-    return await queryBuilder.getMany();
+    // Pagination
+    const offset = (page - 1) * limit;
+    queryBuilder.skip(offset).take(limit);
+
+    // Order By
+    queryBuilder.orderBy(`movie.${orderBy}`, orderType);
+
+    // Execute query and get total count
+    const [movies, total] = await queryBuilder.getManyAndCount();
+
+    return { movies, total, page, limit };
   }
 
-  async getMovieById(id: number): Promise<MovieEntity> {
+  async getMovieById(id?: string): Promise<MovieEntity> {
     const movie = await this.movieRepository.findOne({ where: { id } });
     if (!movie) {
       throw new NotFoundException(`Movie with ID ${id} not found`);
     }
 
     return movie;
+  }
+
+  async getAll(): Promise<MovieEntity[]> {
+    return await this.movieRepository.find();
   }
 
   async create(data: any): Promise<CreateMovieDto> {

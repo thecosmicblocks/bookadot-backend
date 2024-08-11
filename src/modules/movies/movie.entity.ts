@@ -1,32 +1,22 @@
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate,
   ManyToOne,
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-
+import { AbstractEntity } from 'src/database/abstract/abstract.entity';
 import { CategoryEntity } from '../categories/category.entity';
-import { SessionEntity } from '../sessions/entities/session.entity';
+import { SessionEntity } from '../sessions/session.entity';
 
 @Entity({ name: 'movies' })
-export class MovieEntity {
-  @PrimaryGeneratedColumn({
-    name: 'id',
-    type: 'bigint',
-    unsigned: true,
-  })
-  id: number;
-
+export class MovieEntity extends AbstractEntity {
   @Column({
     name: 'category_id',
-    type: 'bigint',
+    type: 'varchar',
     nullable: true,
   })
-  categoryId: number;
+  categoryId: string;
 
   @Column({
     name: 'title',
@@ -113,32 +103,6 @@ export class MovieEntity {
     nullable: true,
   })
   cast: string;
-
-  @Column({
-    name: 'created_at',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: true,
-  })
-  createdAt: Date;
-
-  @Column({
-    name: 'updated_at',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: true,
-  })
-  updatedAt: Date;
-
-  @BeforeInsert()
-  createDates() {
-    this.createdAt = new Date();
-  }
-
-  @BeforeUpdate()
-  updateDates() {
-    this.updatedAt = new Date();
-  }
 
   @ManyToOne(() => CategoryEntity, (category) => category.movies)
   @JoinColumn({ name: 'category_id' })

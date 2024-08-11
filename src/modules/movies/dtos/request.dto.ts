@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsOptional, IsIn } from 'class-validator';
+import { Order, Paginate } from  'src/constants';
 
 export class FilterMovieDto {
   @ApiProperty({ required: false })
@@ -10,7 +11,29 @@ export class FilterMovieDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
-  category_name?: string;
+  categoryName?: string;
+
+  @ApiProperty({ required: false, default: Paginate.page })
+  @IsOptional()
+  @IsString()
+  page?: string;
+
+  @ApiProperty({ required: false, default: Paginate.limit })
+  @IsOptional()
+  @IsString()
+  limit?: string;
+
+  @ApiProperty({ required: false, default: 'title'})
+  @IsOptional()
+  @IsString()
+  @IsIn(['title', 'id', 'createdAt'])
+  orderBy?: string;
+
+  @ApiProperty({ required: false, default: 'DESC' })
+  @IsOptional()
+  @IsString()
+  @IsIn(Object.values(Order))
+  orderType?: string;
 }
 
 export class CreateMovieDto {
