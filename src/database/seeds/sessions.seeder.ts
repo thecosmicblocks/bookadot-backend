@@ -5,6 +5,7 @@ import { MovieService } from 'src/modules/movies/movie.service';
 import { SessionService } from 'src/modules/sessions/session.service';
 import { TheatresService } from 'src/modules/theatres/theatres.service';
 import { AppModule } from 'src/app.module';
+import { MOVIE_FORMAT } from 'src/constants';
 
 @Module({
   imports: [AppModule],
@@ -26,27 +27,30 @@ export const seedSession = async () => {
   const childPrices = [500, 900, 700, 400];
   const studentPrices = [1300, 1000, 1700, 1400];
   const vipPrices = [4300, 4000, 4700, 4400, null];
+  const formats = Object.values(MOVIE_FORMAT);
 
   for (let i = 0; i < movies.length; i++) {
-    const randomMovieIndex = Math.floor(Math.random() * movies.length);
-    const randomTheatreIndex = Math.floor(Math.random() * theatres.length);
-    const randomPriceIndex = Math.floor(Math.random() * adultPrices.length);
+    for (let j = 0; j < 3; j++) {
+      const randomTheatreIndex = Math.floor(Math.random() * theatres.length);
+      const randomPriceIndex = Math.floor(Math.random() * adultPrices.length);
+      const randomFormat = Math.floor(Math.random() * formats.length);
 
-    const startTime = faker.date.soon();
-    const endTime = new Date(startTime.getTime() + 2 * 60 * 60 * 1000);
+      const startTime = faker.date.soon();
+      const endTime = new Date(startTime.getTime() + 2 * 60 * 60 * 1000);
 
-    params.push({
-      movieId: movies.length > 0 ? movies[randomMovieIndex].id : 0,
-      theatreId: movies.length > 0 ? theatres[randomTheatreIndex].id : 0,
-      format: faker.string.sample({ min: 5, max: 10 }),
-      language: 'en',
-      adultPrice: adultPrices[randomPriceIndex],
-      childPrice: childPrices[randomPriceIndex],
-      studentPrice: studentPrices[randomPriceIndex],
-      vipPrice: vipPrices[randomPriceIndex],
-      startTime: startTime,
-      endTime: endTime,
-    });
+      params.push({
+        movieId: movies.length > 0 ? movies[i].id : 0,
+        theatreId: movies.length > 0 ? theatres[randomTheatreIndex].id : 0,
+        format: formats[randomFormat] as MOVIE_FORMAT,
+        language: 'en',
+        adultPrice: adultPrices[randomPriceIndex],
+        childPrice: childPrices[randomPriceIndex],
+        studentPrice: studentPrices[randomPriceIndex],
+        vipPrice: vipPrices[randomPriceIndex],
+        startTime: startTime,
+        endTime: endTime,
+      });
+    }
   }
 
   try {

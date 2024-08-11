@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SessionController } from './session.controller';
-import { SessionEntity } from './session.entity';
+import { SessionEntity } from './entities/session.entity';
 import { SessionService } from './session.service';
 import { TheatreEntity } from '../theatres/theatre.entity';
 import { TheatresService } from '../theatres/theatres.service';
