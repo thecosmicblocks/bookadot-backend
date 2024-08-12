@@ -17,6 +17,10 @@ export class TheatresService {
     return await this.theatreRepository.save(params);
   }
 
+  async findOne(id: string) {
+    return this.theatreRepository.findOne({ where: { id: id } });
+  }
+
   async truncate(): Promise<void> {
     const tableName = this.theatreRepository.metadata.tableName;
 
