@@ -1,19 +1,15 @@
-import {
-  Controller,
-  Get,
-  Param,
-  HttpCode,
-  HttpStatus,
-  Body,
-  ParseIntPipe,
-} from '@nestjs/common';
-
-import { MovieService } from './movie.service';
-import { FilterMovieDto } from './dtos/request.dto';
-import { SuccessResponseDto } from './dtos/response.dto';
-import { NotFoundResponseDto } from 'src/common/dtos/response.dto';
+import { Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { SessionsService } from './sessions.service';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('sessions')
-export class MovieController {
-  constructor(private movieService: MovieService) {}
+export class SessionsController {
+  constructor(private sessionsService: SessionsService) {}
+
+  @Post('seed')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Seed sessions' })
+  async seed(): Promise<void> {
+    await this.sessionsService.seed();
+  }
 }

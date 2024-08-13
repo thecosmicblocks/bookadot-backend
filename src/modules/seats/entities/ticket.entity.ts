@@ -8,12 +8,15 @@ import { ReservationEntity } from 'src/modules/reservations/entities/reservation
 @Entity({ name: 'tickets' })
 export class TicketEntity extends AbstractEntity {
   @Column({ type: 'enum', enum: TICKET_TYPE })
-  ticketTYpe: TICKET_TYPE;
+  ticketType: TICKET_TYPE;
 
   @Column({ type: 'int', nullable: false })
   price: number;
 
-  @ManyToOne(() => SeatEntity, (seat) => seat.tickets)
+  @ManyToOne(() => SeatEntity, (seat) => seat.tickets, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   seat: SeatEntity;
 
   @ManyToOne(() => SessionEntity, (session) => session.tickets)

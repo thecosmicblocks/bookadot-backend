@@ -1,12 +1,4 @@
-import {
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Body,
-  Post,
-  ValidationPipe,
-  UsePipes,
-} from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Body, Post } from '@nestjs/common';
 
 import { SeatEntity } from './entities/seat.entity';
 import { SeatService } from './seat.service';

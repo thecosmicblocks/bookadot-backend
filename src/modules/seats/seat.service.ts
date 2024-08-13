@@ -3,19 +3,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SeatEntity } from './entities/seat.entity';
 import { TheatresService } from '../theatres/theatres.service';
+import { SessionEntity } from '../sessions/entities/session.entity';
+import { TicketEntity } from './entities/ticket.entity';
+import { TICKET_TYPE } from 'src/constants';
 
 @Injectable()
 export class SeatService {
   constructor(
     @InjectRepository(SeatEntity)
     private readonly seatRepository: Repository<SeatEntity>,
+    @InjectRepository(SeatEntity)
+    private readonly ticketRepository: Repository<TicketEntity>,
 
     private readonly theatreService: TheatresService,
   ) {}
 
   async seed(theatreId: string): Promise<SeatEntity[]> {
     // Fetch the theater by ID
-    console.log(theatreId, 'ss');
     const theatre = await this.theatreService.findOne(theatreId);
     if (!theatre) {
       throw new NotFoundException(`Theatre with ID ${theatreId} not found`);
@@ -46,5 +50,27 @@ export class SeatService {
     await this.seatRepository.save(seats);
 
     return seats;
+  }
+
+  async seedTicketsForSession(session: SessionEntity): Promise<void> {
+    const seats = await this.seatRepository.find({
+      where: { theatre: { id: session.theatre.id } },
+      select: ['id', 'row', 'column', 'coordinates', 'theatre'], // Ensure all necessary fields are selected
+    });
+
+    const priceOptions = [60000, 70000, 80000, 100000];
+    const tickets = seats.map((seat) => {
+      const ticket = this.ticketRepository.create();
+      ticket.ticketType = TICKET_TYPE.ADULT; // Default ticket type
+      ticket.price =
+        priceOptions[Math.floor(Math.random() * priceOptions.length)];
+      ticket.seat = seat;
+      ticket.session = session;
+      ticket.reservation = null;
+
+      return ticket;
+    });
+
+    await this.ticketRepository.save(tickets);
   }
 }

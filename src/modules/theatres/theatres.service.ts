@@ -21,6 +21,10 @@ export class TheatresService {
     return this.theatreRepository.findOne({ where: { id: id } });
   }
 
+  async getAllTheatres(): Promise<TheatreEntity[]> {
+    return await this.theatreRepository.find();
+  }
+
   async truncate(): Promise<void> {
     const tableName = this.theatreRepository.metadata.tableName;
 

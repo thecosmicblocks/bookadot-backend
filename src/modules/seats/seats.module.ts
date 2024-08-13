@@ -4,7 +4,6 @@ import { SeatEntity } from './entities/seat.entity';
 import { SeatsController } from './seats.controller';
 import { SeatService } from './seat.service';
 import { TheatresModule } from '../theatres/theatres.module';
-import { TheatresService } from '../theatres/theatres.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SeatEntity]), TheatresModule],
