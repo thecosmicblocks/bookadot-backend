@@ -37,6 +37,7 @@ export class TheatresService {
     const query = this.theatreRepository
       .createQueryBuilder('theatre')
       .leftJoinAndSelect('theatre.sessions', 'sessions')
+      .leftJoinAndSelect('sessions.tickets', 'tickets')
       .where('sessions.movie_id = :movieId', { movieId })
       .andWhere('DATE(sessions.startTime) = :startDate', { startDate })
       .orderBy('theatre.location', 'ASC')

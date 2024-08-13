@@ -13,6 +13,7 @@ import { SeatsModule } from './modules/seats/seats.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 
 import { SessionModule } from './modules/sessions/session.module';
+import { TicketModule } from './modules/tickets/ticket.module';
 
 const Modules = [
   MovieModule,
@@ -23,6 +24,7 @@ const Modules = [
   SeatsModule,
   ReservationsModule,
   SessionModule,
+  TicketModule,
 ];
 @Module({
   imports: [

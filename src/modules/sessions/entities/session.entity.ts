@@ -29,34 +29,6 @@ export class SessionEntity extends AbstractEntity {
   language: string;
 
   @Column({
-    name: 'adult_price',
-    type: 'int',
-    nullable: true,
-  })
-  adultPrice: number;
-
-  @Column({
-    name: 'child_price',
-    type: 'int',
-    nullable: true,
-  })
-  childPrice: number;
-
-  @Column({
-    name: 'student_price',
-    type: 'int',
-    nullable: true,
-  })
-  studentPrice: number;
-
-  @Column({
-    name: 'vip_price',
-    type: 'int',
-    nullable: true,
-  })
-  vipPrice: number;
-
-  @Column({
     name: 'start_time',
     type: 'timestamp',
     nullable: true,
