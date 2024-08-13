@@ -37,6 +37,7 @@ export class SessionService {
     const query = this.sessionRepository
       .createQueryBuilder('session')
       .leftJoinAndSelect('session.theatre', 'theatre')
+      .leftJoinAndSelect('session.tickets', 'tickets')
       .where('session.movieId = :movieId', { movieId })
       .andWhere(qb => {
         const subQuery = qb.subQuery()

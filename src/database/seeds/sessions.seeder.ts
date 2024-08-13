@@ -23,16 +23,11 @@ export const seedSession = async () => {
   const theatres = (await theatresService.getAll()) ?? [];
 
   const params = [];
-  const adultPrices = [2300, 2000, 2700, 2400];
-  const childPrices = [500, 900, 700, 400];
-  const studentPrices = [1300, 1000, 1700, 1400];
-  const vipPrices = [4300, 4000, 4700, 4400, null];
   const formats = Object.values(MOVIE_FORMAT);
 
   for (let i = 0; i < movies.length; i++) {
     for (let j = 0; j < 3; j++) {
       const randomTheatreIndex = Math.floor(Math.random() * theatres.length);
-      const randomPriceIndex = Math.floor(Math.random() * adultPrices.length);
       const randomFormat = Math.floor(Math.random() * formats.length);
 
       const startTime = faker.date.soon();
@@ -43,10 +38,6 @@ export const seedSession = async () => {
         theatreId: movies.length > 0 ? theatres[randomTheatreIndex].id : 0,
         format: formats[randomFormat] as MOVIE_FORMAT,
         language: 'en',
-        adultPrice: adultPrices[randomPriceIndex],
-        childPrice: childPrices[randomPriceIndex],
-        studentPrice: studentPrices[randomPriceIndex],
-        vipPrice: vipPrices[randomPriceIndex],
         startTime: startTime,
         endTime: endTime,
       });
