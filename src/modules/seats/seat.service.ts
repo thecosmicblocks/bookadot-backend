@@ -12,7 +12,7 @@ export class SeatService {
   constructor(
     @InjectRepository(SeatEntity)
     private readonly seatRepository: Repository<SeatEntity>,
-    @InjectRepository(SeatEntity)
+    @InjectRepository(TicketEntity)
     private readonly ticketRepository: Repository<TicketEntity>,
 
     private readonly theatreService: TheatresService,
@@ -55,22 +55,23 @@ export class SeatService {
   async seedTicketsForSession(session: SessionEntity): Promise<void> {
     const seats = await this.seatRepository.find({
       where: { theatre: { id: session.theatre.id } },
-      select: ['id', 'row', 'column', 'coordinates', 'theatre'], // Ensure all necessary fields are selected
     });
 
-    const priceOptions = [60000, 70000, 80000, 100000];
-    const tickets = seats.map((seat) => {
-      const ticket = this.ticketRepository.create();
-      ticket.ticketType = TICKET_TYPE.ADULT; // Default ticket type
-      ticket.price =
-        priceOptions[Math.floor(Math.random() * priceOptions.length)];
-      ticket.seat = seat;
-      ticket.session = session;
-      ticket.reservation = null;
+    if (seats.length) {
+      const priceOptions = [60000, 70000, 80000, 100000];
+      const tickets = seats.map((seat) => {
+        const ticket = this.ticketRepository.create({
+          ticketType: TICKET_TYPE.ADULT, // Default ticket type
+          price: priceOptions[Math.floor(Math.random() * priceOptions.length)],
+          seat,
+          session,
+          reservation: null,
+        });
 
-      return ticket;
-    });
+        return ticket;
+      });
 
-    await this.ticketRepository.save(tickets);
+      await this.ticketRepository.save(tickets);
+    }
   }
 }

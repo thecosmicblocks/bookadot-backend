@@ -43,7 +43,6 @@ export class SessionsService {
         });
 
         await this.sessionRepository.save(session);
-        console.log(session.id, 'wwww');
         await this.seatService.seedTicketsForSession(session);
 
         previousEndTime = dayjs(endTime); // Update the end time for the next session
