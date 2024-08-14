@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { TicketEntity } from '../seats/entities/ticket.entity';
+import { TicketEntity } from './entities/ticket.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TicketEntity])],

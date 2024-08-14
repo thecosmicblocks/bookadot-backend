@@ -2,7 +2,7 @@ import { MOVIE_FORMAT } from 'src/constants';
 import { AbstractEntity } from 'src/database/abstract/abstract.entity';
 import { MovieEntity } from 'src/modules/movies/movie.entity';
 import { ReservationEntity } from 'src/modules/reservations/entities/reservation.entity';
-import { TicketEntity } from 'src/modules/seats/entities/ticket.entity';
+import { TicketEntity } from 'src/modules/tickets/entities/ticket.entity';
 import { TheatreEntity } from 'src/modules/theatres/theatre.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 

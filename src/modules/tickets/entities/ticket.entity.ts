@@ -1,9 +1,8 @@
 import { TICKET_TYPE } from 'src/constants';
 import { AbstractEntity } from 'src/database/abstract/abstract.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
-import { SeatEntity } from './seat.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { SessionEntity } from 'src/modules/sessions/entities/session.entity';
-import { ReservationEntity } from 'src/modules/reservations/entities/reservation.entity';
+import { ReservationInfoEntity } from 'src/modules/reservation-infos/entities/reservation-info.entity';
 
 @Entity({ name: 'tickets' })
 export class TicketEntity extends AbstractEntity {
@@ -13,12 +12,13 @@ export class TicketEntity extends AbstractEntity {
   @Column({ type: 'int', nullable: false })
   price: number;
 
-  @ManyToOne(() => SeatEntity, (seat) => seat.tickets)
-  seat: SeatEntity;
+  @Column({ name:'session_id', type: 'int', nullable: false })
+  sessionId: number;
 
   @ManyToOne(() => SessionEntity, (session) => session.tickets)
+  @JoinColumn({ name: 'session_id' })
   session: SessionEntity;
 
-  @ManyToOne(() => ReservationEntity, (reservation) => reservation.tickets)
-  reservation: ReservationEntity;
+  @OneToMany(() => ReservationInfoEntity, (reservationInfo) => reservationInfo.ticket)
+  reservationInfo: ReservationInfoEntity[];
 }
