@@ -60,6 +60,10 @@ export class SessionService {
     return { sessions, total, page, limit };
   }
 
+  async getAll(): Promise<SessionEntity[]> {
+    return this.sessionRepository.find();
+  }
+
   async create(data: any): Promise<CreateSessionDto> {
     return await this.sessionRepository.save(data);
   }

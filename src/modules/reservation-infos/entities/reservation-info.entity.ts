@@ -3,9 +3,10 @@ import { TicketEntity } from 'src/modules/tickets/entities/ticket.entity';
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { ReservationEntity } from 'src/modules/reservations/entities/reservation.entity';
 import { SeatEntity } from 'src/modules/seats/entities/seat.entity';
+import { SessionEntity } from 'src/modules/sessions/entities/session.entity';
 
 @Entity({ name: 'reservation_infos' })
-@Unique(['ticketId', 'seatId', 'reservationId'])
+@Unique(['seatId', 'sessionId'])
 export class ReservationInfoEntity extends AbstractEntity {
   @Column({
     name: 'reservation_id',
@@ -28,6 +29,13 @@ export class ReservationInfoEntity extends AbstractEntity {
   })
   seatId: string;
 
+  @Column({
+    name: 'session_id',
+    type: 'varchar',
+    nullable: false
+  })
+  sessionId: string;
+
   @ManyToOne(() => ReservationEntity, (reservation) => reservation.reservationInfos)
   @JoinColumn({ name: 'reservation_id' })
   reservation: ReservationEntity;
@@ -39,4 +47,8 @@ export class ReservationInfoEntity extends AbstractEntity {
   @ManyToOne(() => SeatEntity, (seat) => seat.reservationInfo)
   @JoinColumn({ name: 'seat_id' })
   seat: SeatEntity;
+
+  @ManyToOne(() => SessionEntity, (session) => session.reservationInfos)
+  @JoinColumn({ name: 'session_id' })
+  session: SessionEntity;
 }

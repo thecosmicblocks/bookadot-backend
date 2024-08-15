@@ -22,7 +22,9 @@
     "seed:categories": "node -r tsconfig-paths/register -r ts-node/register src/database/seeds/categories.seeder.ts",
     "seed:movies": "node -r tsconfig-paths/register -r ts-node/register src/database/seeds/movies.seeder.ts",
     "seed:theatres": "node -r tsconfig-paths/register -r ts-node/register src/database/seeds/theatres.seed.ts",
-    "seed:sessions": "node -r tsconfig-paths/register -r ts-node/register src/database/seeds/sessions.seeder.ts"
+    "seed:seats": "node -r tsconfig-paths/register -r ts-node/register src/database/seeds/seats.seeder.ts",
+    "seed:sessions": "node -r tsconfig-paths/register -r ts-node/register src/database/seeds/sessions.seeder.ts",
+    "seed:tickets": "node -r tsconfig-paths/register -r ts-node/register src/database/seeds/tickets.seeder.ts"
   },
   "dependencies": {
     "@metamask/eth-sig-util": "^7.0.3",

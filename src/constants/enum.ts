@@ -23,3 +23,10 @@ export enum TICKET_TYPE {
   STUDENT = 'student',
   VIP = 'VIP',
 }
+
+export const TICKET_PRICE = {
+  'ADULT': [3200, 3500, 3900, 3400],
+  'CHILD': [500, 700, 900, 990],
+  'STUDENT': [1200, 1500, 1600, 1800],
+  'VIP': [4000, 4300, 4700, 4900],
+}
