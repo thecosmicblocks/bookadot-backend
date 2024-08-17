@@ -5,6 +5,7 @@ import { ReservationEntity } from 'src/modules/reservations/entities/reservation
 import { TicketEntity } from 'src/modules/tickets/entities/ticket.entity';
 import { TheatreEntity } from 'src/modules/theatres/theatre.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { ReservationInfoEntity } from 'src/modules/reservation-infos/entities/reservation-info.entity';
 
 @Entity({ name: 'sessions' })
 export class SessionEntity extends AbstractEntity {
@@ -50,8 +51,8 @@ export class SessionEntity extends AbstractEntity {
   @JoinColumn({ name: 'theatre_id' })
   theatre: TheatreEntity;
 
-  @OneToMany(() => ReservationEntity, (reservation) => reservation.session)
-  reservations: ReservationEntity[];
+  @OneToMany(() => ReservationInfoEntity, (reservationInfos) => reservationInfos.session)
+  reservationInfos: ReservationEntity[];
 
   @OneToMany(() => TicketEntity, (ticket) => ticket.session)
   tickets: TicketEntity[];
