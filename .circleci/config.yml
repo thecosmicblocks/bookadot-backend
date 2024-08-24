@@ -34,9 +34,9 @@ jobs:
           path: .
           repo: ${PROJECT_PREFIX}
           tag: '${CIRCLE_SHA1}'
-      # - aws-ecs/deploy-service-update:
-      #     requires:
-      #       - aws-ecr/build-and-push-image # only run the deployment job once the build and push image job has completed
-      #     family: '${PROJECT_PREFIX}-service'
-      #     cluster: '${PROJECT_PREFIX}-cluster'
-      #     container-image-name-updates: 'container=${PROJECT_PREFIX}-service,tag=${CIRCLE_SHA1}'
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image # only run the deployment job once the build and push image job has completed
+          family: '${PROJECT_PREFIX}-service'
+          cluster: '${PROJECT_PREFIX}-cluster'
+          container-image-name-updates: 'container=${PROJECT_PREFIX}-service,tag=${CIRCLE_SHA1}'
