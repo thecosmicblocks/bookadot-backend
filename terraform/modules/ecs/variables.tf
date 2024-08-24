@@ -68,3 +68,8 @@ variable "region" {
   description = "AWS Region"
   type        = string
 }
+
+variable "health_check_path" {
+  description = "Health Check Path"
+  type        = string
+}

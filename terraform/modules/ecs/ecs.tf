@@ -133,6 +133,9 @@ resource "aws_lb_target_group" "target_group" {
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = aws_default_vpc.default_vpc.id
+  health_check {
+    path = var.health_check_path
+  }
 }
 
 /*
