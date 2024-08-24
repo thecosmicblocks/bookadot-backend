@@ -23,7 +23,7 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/node:22.7.0
-      - image: cimg/potsgres:15.7
+      - image: cimg/potsgres:15.8
         environment:
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci
