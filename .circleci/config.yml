@@ -21,22 +21,11 @@ workflows:
 
 jobs:
   build-and-test:
-    docker:
-      # - image: cimg/node:22.7.0
-      - image: cimg/potsgres:15.8
-        environment:
-          POSTGRES_USER: circleci
-          POSTGRES_DB: circleci
-          POSTGRES_HOST_AUTH_METHOD: "trust"
-    environment:
       ENV: test
       APP_NAME: bookadot-backend-test
       APP_PORT: 3000
       APP_SERVER_METHOD: http
       APP_SERVER_HOST: localhost:3000
-      DATABASE_POSTGRES_USERNAME: circleci
-      DATABASE_POSTGRES_NAME: circleci
-      POSTGRES_HOST_AUTH_METHOD: "trust"
     steps:
       - run:
           name: Waiting for Postgres to be ready
