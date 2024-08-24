@@ -8,7 +8,7 @@ workflows:
   setup-and-test:
     jobs:
       - test
-  build-and-deploy:
+  docker-build-and-deploy:
     jobs:
       - build-and-deploy
 
