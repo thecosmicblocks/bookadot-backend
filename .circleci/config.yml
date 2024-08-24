@@ -21,16 +21,9 @@ workflows:
 
 jobs:
   build-and-test:
-    environment:
-      ENV: test
-      APP_NAME: bookadot-backend-test
-      APP_PORT: 3000
-      APP_SERVER_METHOD: http
-      APP_SERVER_HOST: localhost:3000
+    docker:
+      - image: cimg/node:22.7.0
     steps:
-      - run:
-          name: Waiting for Postgres to be ready
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - build
       - run: npm test
   # build-and-deploy:
