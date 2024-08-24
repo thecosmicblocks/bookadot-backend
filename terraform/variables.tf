@@ -86,3 +86,8 @@ variable "ecs_service_name" {
   description = "ECS Service Name"
   type        = string
 }
+
+variable "logs_group" {
+  description = "CloudWatch Logs Group Name"
+  type        = string
+}

@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "bookadot-deployment" # The name of the S3 bucket. Must be globally unique.
-    key            = "tf-infra/terraform.tfstate"
-    region         = "ap-southeast-1" # The AWS region
-    encrypt        = true
+    bucket  = "bookadot-deployment" # The name of the S3 bucket. Must be globally unique.
+    key     = "tf-infra/terraform.tfstate"
+    region  = "ap-southeast-1" # The AWS region
+    encrypt = true
     # dynamodb_table = "bookadot-tf-state-lock" # The name of the DynamoDB table. Must be globally unique.
   }
 
@@ -29,6 +29,12 @@ module "ecr_repo" {
   ecr_repo_name = var.ecr_repo_name
 }
 
+module "cloudwatch" {
+  source = "./modules/cloudwatch"
+
+  logs_group = var.logs_group
+}
+
 module "ecs" {
   source = "./modules/ecs"
 
@@ -44,4 +50,6 @@ module "ecs" {
   ecs_service_name               = var.ecs_service_name
   memory                         = var.memory
   cpu                            = var.cpu
+  region                         = var.aws_region
+  logs_group                     = var.logs_group
 }

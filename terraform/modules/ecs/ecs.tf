@@ -49,7 +49,15 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         }
       ],
       "memory": ${var.memory},
-      "cpu": ${var.cpu}
+      "cpu": ${var.cpu},
+      "logConfiguration": {
+				"logDriver": "awslogs",
+        "options": {
+					"awslogs-group": "${var.logs_group}",
+					"awslogs-region": "${var.region}",
+					"awslogs-stream-prefix": "[${var.ecs_cluster_name}] "
+				}
+			}
     }
   ]
   TASK_DEFINITION

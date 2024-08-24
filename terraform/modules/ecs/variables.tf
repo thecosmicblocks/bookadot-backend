@@ -6,7 +6,7 @@ variable "ecs_cluster_name" {
 }
 
 variable "availability_zones" {
-  description = "us-east-1 AZs"
+  description = "ap-southeast-1 AZs"
   type        = list(string)
 }
 
@@ -57,4 +57,14 @@ variable "memory" {
 variable "cpu" {
   description = "cpu"
   type        = number
+}
+
+variable "logs_group" {
+  description = "CloudWatch Logs Group Name"
+  type        = string
+}
+
+variable "region" {
+  description = "AWS Region"
+  type        = string
 }
