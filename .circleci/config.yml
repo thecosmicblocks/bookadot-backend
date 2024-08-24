@@ -1,0 +1,73 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.3.0 # https://circleci.com/developer/orbs/orb/circleci/node
+  # aws-ecr: circleci/aws-ecr@9.3.1 # https://circleci.com/developer/orbs/orb/circleci/aws-ecr
+  # aws-ecs: circleci/aws-ecs@5.0.0 # https://circleci.com/developer/orbs/orb/circleci/aws-ecs
+
+commands:
+  build:
+    steps:
+      - checkout
+      - run: npm install
+
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
+  build-and-deploy:
+    jobs:
+      - build-and-deploy
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:22.7.0
+      - image: cimg/postgres:16.1.0
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci
+          POSTGRES_HOST_AUTH_METHOD: "trust"
+    environment:
+      ENV: test
+      APP_NAME: bookadot-backend-test
+      APP_PORT: 3000
+      APP_SERVER_METHOD: http
+      APP_SERVER_HOST: localhost:3000
+      DATABASE_POSTGRES_USERNAME: circleci
+      DATABASE_POSTGRES_NAME: circleci
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    steps:
+      - run:
+          name: Waiting for Postgres to be ready
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - build
+      - run: npm test
+  # build-and-deploy:
+  #   - aws-ecr/build_and_push_image:
+  #       account_id: ${AWS_ACCOUNT_ID}
+  #       auth:
+  #         - aws-cli/setup:
+  #             profile: OIDC-USER
+  #             role_arn: arn:aws:iam::123456789012:role/VALID_OIDC_ECR_ROLE
+  #       context: CircleCI_OIDC_Token
+  #       create_repo: true
+  #       dockerfile: myDockerfile
+  #       executors: base
+  #       extra_build_args: '--compress'
+  #       no_output_timeout: 20m
+  #       path: pathToMyDockerfile
+  #       platform: linux/amd64
+  #       profile_name: OIDC-User
+  #       public_registry: false
+  #       push_image: true
+  #       region: ${AWS_DEFAULT_REGION}
+  #       repo: myECRRepository
+  #       repo_encryption_kms_key: arn:aws:kms::123456789012:key/UUID4_OF_KMS_KEY_ID
+  #       repo_encryption_type: KMS
+  #       repo_policy_path: repo-policy.json
+  #       repo_scan_on_push: true
+  #       set_repo_policy: true
+  #       skip_when_tags_exist: false
+  #       tag: latest,myECRRepoTag
+
