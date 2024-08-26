@@ -52,7 +52,6 @@ workflows:
                 - develop
                 - staging
                 - master
-                - feature/test_deploy
       - aws-ecs/deploy_service_update:
           name: deploy
           auth:
@@ -67,6 +66,5 @@ workflows:
                 - develop
                 - staging
                 - master
-                - feature/test_deploy
           requires:
             - build
