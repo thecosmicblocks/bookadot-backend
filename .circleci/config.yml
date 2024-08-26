@@ -39,15 +39,15 @@ jobs:
           tag: $CIRCLE_SHA1
           region: $AWS_REGION
           extra_build_args: |
-            --build-arg ENV=${ENV}
-            --build-arg APP_NAME=${AWS_RESOURCE_NAME_PREFIX}
-            --build-arg APP_PORT=${PORT}
-            --build-arg APP_SERVER_METHOD=${APP_SERVER_METHOD}
-            --build-arg APP_SERVER_HOST=${APP_SERVER_HOST}
-            --build-arg DATABASE_POSTGRES_USERNAME=${DATABASE_POSTGRES_USERNAME}
-            --build-arg DATABASE_POSTGRES_PASSWORD=${DATABASE_POSTGRES_PASSWORD}
-            --build-arg DATABASE_POSTGRES_HOST=${DATABASE_POSTGRES_HOST}
-            --build-arg DATABASE_POSTGRES_PORT=${DATABASE_POSTGRES_PORT}
+            --build-arg ENV=${ENV} |
+            --build-arg APP_NAME=${AWS_RESOURCE_NAME_PREFIX} |
+            --build-arg APP_PORT=${PORT}  |
+            --build-arg APP_SERVER_METHOD=${APP_SERVER_METHOD} |
+            --build-arg APP_SERVER_HOST=${APP_SERVER_HOST} |
+            --build-arg DATABASE_POSTGRES_USERNAME=${DATABASE_POSTGRES_USERNAME} |
+            --build-arg DATABASE_POSTGRES_PASSWORD=${DATABASE_POSTGRES_PASSWORD} |
+            --build-arg DATABASE_POSTGRES_HOST=${DATABASE_POSTGRES_HOST} |
+            --build-arg DATABASE_POSTGRES_PORT=${DATABASE_POSTGRES_PORT} |
             --build-arg DATABASE_POSTGRES_NAME=${DATABASE_POSTGRES_NAME}
 
 workflows:
