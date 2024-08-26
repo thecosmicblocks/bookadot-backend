@@ -9,13 +9,11 @@ executors:
   aws:
     docker:
       - image: cimg/aws:2024.03.1
-  node:
-    docker:
-      - image: cimg/node:22.7.0
 
 jobs:
   test: 
-    executor: node
+    docker:
+      - image: cimg/node:22.7.0
     steps:
       - checkout
       - restore_cache:
