@@ -1,0 +1,70 @@
+version: '2.1'
+
+orbs:
+  aws-ecr: circleci/aws-ecr@9.0
+  aws-ecs: circleci/aws-ecs@4.0
+  aws-cli: circleci/aws-cli@4.1.3
+
+executors:
+  aws:
+    docker:
+      - image: cimg/aws:2024.03.1
+  node:
+    docker:
+      - image: cimg/node:22.7.0
+
+jobs:
+  test: 
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: "Install package"
+          command: npm install
+      - run:
+          name: "Test"
+          command: npm test
+  build:
+    executor: aws
+    steps:
+      - setup_remote_docker:
+          version: docker24
+      - aws-ecr/build_and_push_image:
+          account_id: $AWS_ACCOUNT_ID
+          auth:
+            - aws-cli/setup:
+                region: $AWS_REGION
+          push_image: true
+          repo: $AWS_RESOURCE_NAME_PREFIX
+          tag: $CIRCLE_SHA1
+          region: $AWS_REGION
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - develop
+                - staging
+                - master
+      - aws-ecs/deploy_service_update:
+          name: deploy
+          auth:
+            - aws-cli/setup:
+                region: $AWS_REGION
+          cluster: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
+          container_image_name_updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}"
+          family: "${AWS_RESOURCE_NAME_PREFIX}-service"
+          filters:
+            branches:
+              only:
+                - develop
+                - staging
+                - master
+          requires:
+            - build

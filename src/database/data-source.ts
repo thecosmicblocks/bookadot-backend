@@ -11,6 +11,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE_POSTGRES_NAME,
   connectTimeoutMS: 0,
   logNotifications: true,
+  ssl: true,
   synchronize:
     [String(Environment.local), String(Environment.test)].indexOf(
       process.env.ENV,

@@ -7,6 +7,7 @@ import * as compression from 'compression';
 import {
   BadRequestException,
   Logger,
+  RequestMethod,
   ValidationError,
   ValidationPipe,
 } from '@nestjs/common';
@@ -17,7 +18,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   app.enableCors();
-  app.setGlobalPrefix(`/${API_PREFIX}/${API_VERSION}`);
+  app.setGlobalPrefix(`/${API_PREFIX}/${API_VERSION}`, {
+    exclude: [{ path: 'health-check', method: RequestMethod.GET }],
+  });
   app.use(helmet());
   app.use(compression());
   app.useGlobalPipes(

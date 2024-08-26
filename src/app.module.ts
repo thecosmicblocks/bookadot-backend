@@ -15,8 +15,10 @@ import { ReservationModule } from './modules/reservations/reservation.module';
 import { SessionModule } from './modules/sessions/session.module';
 import { TicketModule } from './modules/tickets/ticket.module';
 import { ReservationInfoModule } from './modules/reservation-infos/reservation-info.module';
+import { HealthCheckModule } from './modules/health-check/health-check.module';
 
 const Modules = [
+  HealthCheckModule,
   MovieModule,
   UsersModule,
   CategoryModule,
