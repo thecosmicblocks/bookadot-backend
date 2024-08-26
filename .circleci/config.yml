@@ -17,6 +17,7 @@ jobs:
   test: 
     executor: node
     steps:
+      - checkout
       - restore_cache:
           keys:
             - deps-{{ checksum "package.json" }}
