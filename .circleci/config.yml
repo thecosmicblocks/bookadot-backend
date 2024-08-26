@@ -29,6 +29,20 @@ jobs:
     steps:
       - setup_remote_docker:
           version: docker24
+      - run:
+          name: "Add environment variables"
+          command: |
+            echo 'export APP_NAME=${AWS_RESOURCE_NAME_PREFIX}' > $BASH_ENV
+            echo 'export ENV=${ENV}' > $BASH_ENV
+            echo 'export APP_PORT=${PORT}' > $BASH_ENV
+            echo 'export APP_SERVER_METHOD=${APP_SERVER_METHOD}' > $BASH_ENV
+            echo 'export APP_SERVER_HOST=${APP_SERVER_HOST}' > $BASH_ENV
+            echo 'export DATABASE_POSTGRES_USERNAME=${DATABASE_POSTGRES_USERNAME}' > $BASH_ENV
+            echo 'export DATABASE_POSTGRES_PASSWORD=${DATABASE_POSTGRES_PASSWORD}' > $BASH_ENV
+            echo 'export DATABASE_POSTGRES_HOST=${DATABASE_POSTGRES_HOST}' > $BASH_ENV
+            echo 'export DATABASE_POSTGRES_PORT=${DATABASE_POSTGRES_PORT}' > $BASH_ENV
+            echo 'export DATABASE_POSTGRES_NAME=${DATABASE_POSTGRES_NAME}' > $BASH_ENV
+            source $BASH_ENV
       - aws-ecr/build_and_push_image:
           account_id: $AWS_ACCOUNT_ID
           auth:
@@ -38,17 +52,6 @@ jobs:
           repo: $AWS_RESOURCE_NAME_PREFIX
           tag: $CIRCLE_SHA1
           region: $AWS_REGION
-          extra_build_args: |
-            --build-arg ENV=${ENV} |
-            --build-arg APP_NAME=${AWS_RESOURCE_NAME_PREFIX} |
-            --build-arg APP_PORT=${PORT}  |
-            --build-arg APP_SERVER_METHOD=${APP_SERVER_METHOD} |
-            --build-arg APP_SERVER_HOST=${APP_SERVER_HOST} |
-            --build-arg DATABASE_POSTGRES_USERNAME=${DATABASE_POSTGRES_USERNAME} |
-            --build-arg DATABASE_POSTGRES_PASSWORD=${DATABASE_POSTGRES_PASSWORD} |
-            --build-arg DATABASE_POSTGRES_HOST=${DATABASE_POSTGRES_HOST} |
-            --build-arg DATABASE_POSTGRES_PORT=${DATABASE_POSTGRES_PORT} |
-            --build-arg DATABASE_POSTGRES_NAME=${DATABASE_POSTGRES_NAME}
 
 workflows:
   build-and-deploy:
