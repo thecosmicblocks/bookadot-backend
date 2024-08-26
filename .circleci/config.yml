@@ -49,12 +49,12 @@ jobs:
           region: $AWS_REGION
 
 workflows:
-  setup-and-test:
-    jobs:
-      - test
   build-and-deploy:
     jobs:
+      - test
       - build:
+          requires:
+            - test
           filters:
             branches:
               only:
@@ -73,7 +73,9 @@ workflows:
           filters:
             branches:
               only:
-                - master
                 - develop
+                - staging
+                - master
+                - feature/test_deploy
           requires:
             - build
