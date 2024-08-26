@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       "portMappings": [
         {
           "containerPort": ${var.container_port},
-          "hostPort": ${var.container_port}
+          "hostPort": ${var.host_port}
         }
       ],
       "memory": ${var.memory},
@@ -57,7 +57,19 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 					"awslogs-region": "${var.region}",
 					"awslogs-stream-prefix": "[${var.ecs_cluster_name}] "
 				}
-			}
+			},
+      "environment": [
+          { "name": "ENV", "value": "${var.enviroment}" },
+          { "name": "APP_NAME", "value": "${var.app_name}" },
+          { "name": "APP_PORT", "value": "${var.app_port}" },
+          { "name": "APP_SERVER_METHOD", "value": "${var.app_protocol}" },
+          { "name": "APP_SERVER_HOST", "value": "${var.app_host}" },
+          { "name": "DATABASE_POSTGRES_USERNAME", "value": "${var.database_postgres_name}" },
+          { "name": "DATABASE_POSTGRES_PASSWORD", "value": "${var.database_postgres_password}" },
+          { "name": "DATABASE_POSTGRES_HOST", "value": "${var.database_postgres_host}" },
+          { "name": "DATABASE_POSTGRES_PORT", "value": "${var.database_postgres_port}" },
+          { "name": "DATABASE_POSTGRES_NAME", "value": "${var.database_postgres_name}" }
+      ]
     }
   ]
   TASK_DEFINITION
@@ -66,25 +78,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   network_mode             = "awsvpc"
   memory                   = var.memory
   cpu                      = var.cpu
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-}
-
-/*
-  Purpose: Create a IAM role for the ECS task execution.
-  Read more: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
-*/
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = var.ecs_task_execution_role_name
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-}
-
-/*
-  Purpose: Attach the Amazon ECS task execution IAM policy to the IAM role.
-  Read more: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
-*/
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+  execution_role_arn       = var.ecs_task_execution_role_arn
 }
 
 

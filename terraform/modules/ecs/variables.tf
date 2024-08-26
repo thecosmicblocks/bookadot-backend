@@ -25,13 +25,18 @@ variable "container_port" {
   type        = number
 }
 
+variable "host_port" {
+  description = "Host Port"
+  type        = number
+}
+
 variable "ecs_task_definition_name" {
   description = "ECS Task Name"
   type        = string
 }
 
-variable "ecs_task_execution_role_name" {
-  description = "ECS Task Execution Role Name"
+variable "ecs_task_execution_role_arn" {
+  description = "ECS Task Execution Role ARN"
   type        = string
 }
 
@@ -71,5 +76,55 @@ variable "region" {
 
 variable "health_check_path" {
   description = "Health Check Path"
+  type        = string
+}
+
+variable "enviroment" {
+  description = "Environment type"
+  type        = string
+}
+
+variable "app_name" {
+  description = "Name of the app"
+  type        = string
+}
+
+variable "app_port" {
+  description = "Port of the app"
+  type        = number
+}
+
+variable "app_protocol" {
+  description = "Protocol http or https"
+  type        = string
+}
+
+variable "app_host" {
+  description = "Host"
+  type        = string
+}
+
+variable "database_postgres_username" {
+  description = "Postgres username"
+  type        = string
+}
+
+variable "database_postgres_password" {
+  description = "Postgres password"
+  type        = string
+}
+
+variable "database_postgres_host" {
+  description = "Postgres host"
+  type        = string
+}
+
+variable "database_postgres_port" {
+  description = "Postgres port"
+  type        = number
+}
+
+variable "database_postgres_name" {
+  description = "Database name"
   type        = string
 }

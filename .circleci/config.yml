@@ -61,17 +61,6 @@ workflows:
           cluster: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
           container_image_name_updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}"
           family: "${AWS_RESOURCE_NAME_PREFIX}-service"
-          environment:
-            APP_NAME: $AWS_RESOURCE_NAME_PREFIX
-            ENV: $ENV
-            APP_PORT: $PORT
-            APP_SERVER_METHOD: $APP_SERVER_METHOD
-            APP_SERVER_HOST: $APP_SERVER_HOST
-            DATABASE_POSTGRES_USERNAME: $DATABASE_POSTGRES_USERNAME
-            DATABASE_POSTGRES_PASSWORD: $DATABASE_POSTGRES_PASSWORD
-            DATABASE_POSTGRES_HOST: $DATABASE_POSTGRES_HOST
-            DATABASE_POSTGRES_PORT: $DATABASE_POSTGRES_PORT
-            DATABASE_POSTGRES_NAME: $DATABASE_POSTGRES_NAME
           filters:
             branches:
               only:

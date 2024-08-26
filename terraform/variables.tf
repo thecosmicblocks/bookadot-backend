@@ -47,3 +47,43 @@ variable "health_check_path" {
   description = "Health Check Path"
   type        = string
 }
+
+variable "app_port" {
+  description = "Port"
+  type        = number
+}
+
+variable "app_protocol" {
+  description = "Protocol http or https"
+  type        = string
+}
+
+variable "app_host" {
+  description = "Host"
+  type        = string
+}
+
+variable "database_postgres_username" {
+  description = "Postgres username"
+  type        = string
+}
+
+variable "database_postgres_password" {
+  description = "Postgres password"
+  type        = string
+}
+
+variable "database_postgres_host" {
+  description = "Postgres host"
+  type        = string
+}
+
+variable "database_postgres_port" {
+  description = "Postgres port"
+  type        = number
+}
+
+variable "database_postgres_name" {
+  description = "Database name"
+  type        = string
+}
