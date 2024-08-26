@@ -64,7 +64,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
           { "name": "APP_PORT", "value": "${var.app_port}" },
           { "name": "APP_SERVER_METHOD", "value": "${var.app_protocol}" },
           { "name": "APP_SERVER_HOST", "value": "${var.app_host}" },
-          { "name": "DATABASE_POSTGRES_USERNAME", "value": "${var.database_postgres_name}" },
+          { "name": "DATABASE_POSTGRES_USERNAME", "value": "${var.database_postgres_username}" },
           { "name": "DATABASE_POSTGRES_PASSWORD", "value": "${var.database_postgres_password}" },
           { "name": "DATABASE_POSTGRES_HOST", "value": "${var.database_postgres_host}" },
           { "name": "DATABASE_POSTGRES_PORT", "value": "${var.database_postgres_port}" },
