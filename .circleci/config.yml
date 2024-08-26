@@ -2,40 +2,40 @@ version: '2.1'
 
 orbs:
   aws-ecr: circleci/aws-ecr@9.0
-  aws-cli: circleci/aws-cli@4.1.3
   aws-ecs: circleci/aws-ecs@4.0
+  aws-cli: circleci/aws-cli@4.1.3
 
 executors:
-  node:
+  aws:
     docker:
       - image: cimg/aws:2024.03.1
+  node:
+    docker:
+      - image: cimg/node:22.7.0
 
 jobs:
   test: 
-    docker:
-      - image: cimg/node:22.7.0
-    steps:
-      - checkout
-      - run:
-          name: "Install package"
-          command: npm install
-      - run:
-          name: "Test" 
-          command: npm test
-  build:
     executor: node
     steps:
-      - checkout
       - restore_cache:
           keys:
             - deps-{{ checksum "package.json" }}
-      - run: npm install
+      - run:
+          name: "Install package"
+          command: npm install
       - save_cache:
           key: deps-{{ checksum "package.json" }}
           paths:
             - node_modules
-      - run: npm run build
-      - run: npm ci --omit=dev
+      - run: 
+          name: "Install only regular dependencies"
+          command: npm ci --omit=dev
+      - run:
+          name: "Test"
+          command: npm test
+  build:
+    executor: aws
+    steps:
       - setup_remote_docker:
           version: docker24
       - aws-ecr/build_and_push_image:
@@ -47,6 +47,17 @@ jobs:
           repo: $AWS_RESOURCE_NAME_PREFIX
           tag: $CIRCLE_SHA1
           region: $AWS_REGION
+          extra_build_args: |
+            --build-arg ENV=${ENV}
+            --build-arg APP_NAME=${AWS_RESOURCE_NAME_PREFIX}
+            --build-arg APP_PORT=${PORT}
+            --build-arg APP_SERVER_METHOD=${APP_SERVER_METHOD}
+            --build-arg APP_SERVER_HOST=${APP_SERVER_HOST}
+            --build-arg DATABASE_POSTGRES_USERNAME=${DATABASE_POSTGRES_USERNAME}
+            --build-arg DATABASE_POSTGRES_PASSWORD=${DATABASE_POSTGRES_PASSWORD}
+            --build-arg DATABASE_POSTGRES_HOST=${DATABASE_POSTGRES_HOST}
+            --build-arg DATABASE_POSTGRES_PORT=${DATABASE_POSTGRES_PORT}
+            --build-arg DATABASE_POSTGRES_NAME=${DATABASE_POSTGRES_NAME}
 
 workflows:
   build-and-deploy:
