@@ -14,8 +14,9 @@ import { ReservationModule } from './modules/reservations/reservation.module';
 
 import { SessionModule } from './modules/sessions/session.module';
 import { TicketModule } from './modules/tickets/ticket.module';
-import { ReservationInfoModule } from './modules/reservation-infos/reservation-info.module';
 import { HealthCheckModule } from './modules/health-check/health-check.module';
+import { AgeGroupModule } from './modules/age-group/age-group.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 const Modules = [
   HealthCheckModule,
@@ -28,7 +29,8 @@ const Modules = [
   ReservationModule,
   SessionModule,
   TicketModule,
-  ReservationInfoModule,
+  AgeGroupModule,
+  PaymentsModule,
 ];
 @Module({
   imports: [
@@ -39,7 +41,9 @@ const Modules = [
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    ...Modules
+    ...Modules,
+    AgeGroupModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}

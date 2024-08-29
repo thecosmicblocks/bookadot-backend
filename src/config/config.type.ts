@@ -5,6 +5,7 @@ export type DatabaseConfig = {
   port: number;
   password: string;
   name: string;
+  ssl: boolean;
   username: string;
   synchronize?: boolean;
   autoLoadEntities?: boolean;

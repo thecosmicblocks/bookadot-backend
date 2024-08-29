@@ -17,29 +17,15 @@ export const seedSeat = async () => {
 
   const theatres = (await theatresService.getAll()) ?? [];
 
-  const params = [];
-  const column = 12;
-  const row = 10;
-
-  for (let i = 0; i < theatres.length; i++) {
-    for (let j = 0; j < row; j++) {
-      for (let k = 0; k < column; k++) {
-        params.push({
-          theatreId: theatres[i].id,
-          column: k,
-          row: j,
-          coordinates: [j, k]
-        });
-      }
-    }
-  }
-
   try {
     await seatService.truncate();
-    await seatService.create(params);
+    for (const theatre of theatres) {
+      await seatService.seed(theatre.id);
+    }
   } catch (error) {
-    console.log('Seed seat fail!', error);
+    console.log(error);
   }
+
   await app.close();
   process.exit(0);
 };

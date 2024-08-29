@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  JoinColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { AbstractEntity } from 'src/database/abstract/abstract.entity';
 import { CategoryEntity } from '../categories/category.entity';
 import { SessionEntity } from '../sessions/entities/session.entity';
@@ -12,21 +6,12 @@ import { SessionEntity } from '../sessions/entities/session.entity';
 @Entity({ name: 'movies' })
 export class MovieEntity extends AbstractEntity {
   @Column({
-    name: 'category_id',
-    type: 'varchar',
-    nullable: true,
-  })
-  categoryId: string;
-
-  @Column({
-    name: 'title',
     type: 'varchar',
     length: 200,
   })
   title: string;
 
   @Column({
-    name: 'description',
     type: 'text',
     nullable: true,
   })
@@ -70,18 +55,17 @@ export class MovieEntity extends AbstractEntity {
   knopoiskRating: number;
 
   @Column({
-    name: 'certificate',
     type: 'varchar',
     nullable: true,
   })
   certificate: string;
 
   @Column({
-    name: 'runtime',
-    type: 'varchar',
+    type: 'int',
+    default: 0,
     nullable: true,
   })
-  runtime: string;
+  runtime: number;
 
   @Column({
     name: 'release',
@@ -91,18 +75,25 @@ export class MovieEntity extends AbstractEntity {
   release: Date;
 
   @Column({
-    name: 'director',
     type: 'varchar',
-    nullable: true,
+    array: true,
+    nullable: false,
   })
-  director: string;
+  directors: string[];
 
   @Column({
-    name: 'cast',
     type: 'varchar',
-    nullable: true,
+    array: true,
+    nullable: false,
   })
-  cast: string;
+  casts: string[];
+
+  @Column({
+    type: 'varchar',
+    array: true,
+    nullable: false,
+  })
+  genres: string[];
 
   @ManyToOne(() => CategoryEntity, (category) => category.movies)
   @JoinColumn({ name: 'category_id' })

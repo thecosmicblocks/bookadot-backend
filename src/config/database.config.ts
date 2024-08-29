@@ -9,7 +9,7 @@ export default registerAs<DatabaseConfig>('database', () => ({
   username: process.env.DATABASE_POSTGRES_USERNAME,
   name: process.env.DATABASE_POSTGRES_NAME,
   password: process.env.DATABASE_POSTGRES_PASSWORD,
-  ssl: true,
+  ssl: process.env.DATABASE_POSTGRES_SSL === 'true',
   synchronize:
     [String(Environment.local), String(Environment.test)].indexOf(
       process.env.ENV,

@@ -1,14 +1,14 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository, Like } from 'typeorm';
-
+import { DataSource, Repository } from 'typeorm';
+import * as dayjs from 'dayjs';
 import { SessionEntity } from './entities/session.entity';
 import { CreateSessionDto } from './dtos/request.dto';
-import { Order, Paginate } from 'src/constants';
+import { MOVIE_FORMAT, Order, Paginate } from 'src/constants';
 import * as moment from 'moment';
+import { TheatresService } from '../theatres/theatres.service';
+import { MovieService } from '../movies/movie.service';
+import { SeatService } from '../seats/seats.service';
 
 @Injectable()
 export class SessionService {
@@ -16,20 +16,23 @@ export class SessionService {
     @InjectRepository(SessionEntity)
     private sessionRepository: Repository<SessionEntity>,
     private dataSource: DataSource,
+    private readonly theatreService: TheatresService,
+    private readonly movieService: MovieService,
+    private readonly seatService: SeatService,
   ) {}
 
   async getList(params: any): Promise<{
-    sessions: SessionEntity[],
-    total: number,
-    page: number,
-    limit: number
+    sessions: SessionEntity[];
+    total: number;
+    page: number;
+    limit: number;
   }> {
     const {
       movieId,
       date = new Date(),
       orderTimeType = Order.ASC,
       page = Paginate.page,
-      limit = Paginate.limit
+      limit = Paginate.limit,
     } = params;
 
     const startDate = moment(date).format('YYYY-MM-DD');
@@ -39,8 +42,9 @@ export class SessionService {
       .leftJoinAndSelect('session.theatre', 'theatre')
       .leftJoinAndSelect('session.tickets', 'tickets')
       .where('session.movieId = :movieId', { movieId })
-      .andWhere(qb => {
-        const subQuery = qb.subQuery()
+      .andWhere((qb) => {
+        const subQuery = qb
+          .subQuery()
           .select('MIN(session2.startTime)')
           .from('sessions', 'session2')
           .where('session2.theatreId = session.theatreId')
@@ -66,6 +70,39 @@ export class SessionService {
 
   async create(data: any): Promise<CreateSessionDto> {
     return await this.sessionRepository.save(data);
+  }
+
+  async seed(): Promise<void> {
+    const theatres = await this.theatreService.getAll();
+
+    for (const theatre of theatres) {
+      const sessionCount = Math.floor(Math.random() * 2) + 2; // 2 or 3 sessions
+      const movies = await this.movieService.getAll();
+
+      let previousEndTime = dayjs().set('hour', 10).set('minute', 0); // First session starts at 10:00 AM
+
+      for (let i = 0; i < sessionCount; i++) {
+        const movie = movies[Math.floor(Math.random() * movies.length)];
+
+        // Start time is 10 minutes after the previous session's end time
+        const startTime = previousEndTime.add(10, 'minute').toDate();
+        const endTime = dayjs(startTime).add(120, 'minute').toDate();
+
+        const session = this.sessionRepository.create({
+          format: MOVIE_FORMAT.TWO_D, // default format
+          language: 'English', // default language
+          startTime,
+          endTime,
+          movie,
+          theatre,
+        });
+
+        await this.sessionRepository.save(session);
+        // await this.seatService.seedTicketsForSession(session);
+
+        previousEndTime = dayjs(endTime); // Update the end time for the next session
+      }
+    }
   }
 
   async truncate(): Promise<void> {

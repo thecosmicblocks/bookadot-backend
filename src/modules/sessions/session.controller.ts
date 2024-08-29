@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  HttpCode,
-  HttpStatus,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 
 import { SessionService } from './session.service';
 import { TheatresService } from '../theatres/theatres.service';
@@ -13,7 +6,6 @@ import { FilterSessionDto } from './dtos/request.dto';
 import { SuccessResponseDto } from './dtos/response.dto';
 import { NotFoundResponseDto } from 'src/common/dtos/response.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-
 
 @ApiTags('sessions')
 @Controller('sessions')
@@ -35,7 +27,7 @@ export class SessionController {
     let page: number = 0;
     let limit: number = 0;
 
-    if (typeof(byCinema) !== 'undefined' && byCinema === 'true') {
+    if (typeof byCinema !== 'undefined' && byCinema === 'true') {
       const result = await this.theatresService.getListByMovie(params);
       response = result.theatres;
       total = result.total;
@@ -49,6 +41,6 @@ export class SessionController {
       limit = result.limit;
     }
 
-    return new SuccessResponseDto({response, total, page, limit});
+    return new SuccessResponseDto({ response, total, page, limit });
   }
 }

@@ -1,11 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, IsOptional, IsIn, IsDateString, IsUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsOptional,
+  IsIn,
+  IsDateString,
+  IsUUID,
+} from 'class-validator';
 import { Order } from 'src/constants';
 import * as moment from 'moment';
 
 const currentDate = moment().format('YYYY-MM-DD');
 export class FilterSessionDto {
-
   @ApiProperty({ required: true })
   @IsUUID()
   movieId?: string;

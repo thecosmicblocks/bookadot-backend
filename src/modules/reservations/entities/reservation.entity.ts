@@ -1,28 +1,21 @@
 import { AbstractEntity } from 'src/database/abstract/abstract.entity';
+import { PaymentEntity } from 'src/modules/payments/payment.entity';
+import { TicketEntity } from 'src/modules/tickets/entities/ticket.entity';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { ReservationInfoEntity } from 'src/modules/reservation-infos/entities/reservation-info.entity';
 
 @Entity({ name: 'reservations' })
 export class ReservationEntity extends AbstractEntity {
-  @Column({
-    name: 'user_id',
-    type: 'varchar',
-    nullable: false
-  })
-  userId: string;
-
-  @Column({
-    name: 'total_price',
-    type: 'numeric',
-    nullable: false
-  })
-  totalPrice: number;
+  @Column({ name: 'reservation_type', type: 'varchar', nullable: false })
+  reservationType: string;
 
   @ManyToOne(() => UserEntity, (user) => user.reservations)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @OneToMany(() => ReservationInfoEntity, (info) => info.reservation)
-  reservationInfos: ReservationInfoEntity[];
+  @OneToMany(() => TicketEntity, (ticket) => ticket.reservation)
+  tickets: TicketEntity[];
+
+  @OneToMany(() => PaymentEntity, (payment) => payment.reservation)
+  payments: PaymentEntity[];
 }

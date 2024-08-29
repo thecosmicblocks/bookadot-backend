@@ -25,7 +25,8 @@ export class MovieController {
   async getMovies(
     @Query() params: FilterMovieDto,
   ): Promise<SuccessResponseDto | NotFoundResponseDto> {
-    const { movies, total, page, limit } = await this.movieService.getMovies(params);
+    const { movies, total, page, limit } =
+      await this.movieService.getMovies(params);
 
     return new SuccessResponseDto({ movies, total, page, limit });
   }

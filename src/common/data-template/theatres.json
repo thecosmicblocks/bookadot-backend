@@ -3,30 +3,30 @@
     "name": "Grand Palace Theatre",
     "address": "123 Main Street, Springfield, IL",
     "location": "5.2 KM",
-    "totalSeats": "500"
+    "totalSeats": 165
   },
   {
     "name": "Cinema World",
     "address": "456 Elm Street, Gotham City, NY",
     "location": "3.1 KM",
-    "totalSeats": "300"
+    "totalSeats": 165
   },
   {
     "name": "Starview Theatre",
     "address": "789 Oak Avenue, Metropolis, CA",
     "location": "7.8 KM",
-    "totalSeats": "450"
+    "totalSeats": 165
   },
   {
     "name": "Royal Arts Theatre",
     "address": "321 Maple Lane, Smallville, KS",
     "location": "2.5 KM",
-    "totalSeats": "250"
+    "totalSeats": 165
   },
   {
     "name": "Sunset Cinema",
     "address": "654 Pine Road, Star City, WA",
     "location": "4.3 KM",
-    "totalSeats": "350"
+    "totalSeats": 165
   }
 ]

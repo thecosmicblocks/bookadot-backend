@@ -18,7 +18,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: databaseConfig.username,
       password: databaseConfig.password,
       database: databaseConfig.name,
-      ssl: true,
+      ssl: databaseConfig.ssl,
       entities: [join(__dirname, '..', 'modules/**/*.entity.{ts,js}')],
       synchronize: databaseConfig.synchronize,
     } as TypeOrmModuleOptions;

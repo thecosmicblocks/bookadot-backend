@@ -23,7 +23,7 @@ export const seedMovie = async () => {
     const randomIndex = Math.floor(Math.random() * categories.length);
 
     params.push({
-      categoryId: categories.length > 0 ? categories[randomIndex].id : 0,
+      category: categories.length > 0 ? categories[randomIndex] : null,
       title: movieData[i].title,
       description: movieData[i].description,
       movieUrl: movieData[i].movie_url,
@@ -34,7 +34,9 @@ export const seedMovie = async () => {
       certificate: movieData[i].certificate,
       runtime: movieData[i].runtime,
       release: movieData[i].release,
-      director: movieData[i].director,
+      directors: movieData[i].directors,
+      casts: movieData[i].casts,
+      genres: movieData[i].genres,
     });
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TheatreEntity } from './theatre.entity';
+import { TheatreEntity } from './entities/theatre.entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateTheatreDto } from './dtos/create-theatre.dto';
 import { Order, Paginate } from 'src/constants';
@@ -18,18 +18,22 @@ export class TheatresService {
     return await this.theatreRepository.find();
   }
 
+  async findOne(id: string) {
+    return this.theatreRepository.findOne({ where: { id: id } });
+  }
+
   async getListByMovie(params: any): Promise<{
-    theatres: TheatreEntity[],
-    total: number,
-    page: number,
-    limit: number
+    theatres: TheatreEntity[];
+    total: number;
+    page: number;
+    limit: number;
   }> {
     const {
       movieId,
       date = new Date(),
       orderTimeType = Order.ASC,
       page = Paginate.page,
-      limit = Paginate.limit
+      limit = Paginate.limit,
     } = params;
 
     const startDate = moment(date).format('YYYY-MM-DD');

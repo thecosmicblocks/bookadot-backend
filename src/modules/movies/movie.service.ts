@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository, Like } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 import { MovieEntity } from './movie.entity';
 import { CreateMovieDto, FilterMovieDto } from './dtos/request.dto';
@@ -18,11 +18,11 @@ export class MovieService {
     private dataSource: DataSource,
   ) {}
 
-  async getMovies(params: any): Promise<{
-    movies: MovieEntity[],
-    total: number,
-    page: number,
-    limit: number
+  async getMovies(params: FilterMovieDto): Promise<{
+    movies: MovieEntity[];
+    total: number;
+    page: number;
+    limit: number;
   }> {
     const {
       title,
